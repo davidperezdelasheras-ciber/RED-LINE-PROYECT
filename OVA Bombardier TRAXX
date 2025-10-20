@@ -1,0 +1,27 @@
+## 💿 Descarga de la máquina virtual (OVA) Bombardier TRAXX 
+
+Para facilitar la implementación del laboratorio **Línea Roja**, se incluye una imagen virtual preconfigurada del entorno **Ubuntu Server + Node-RED + Mosquitto MQTT** lista para importar en **VirtualBox**.
+
+### 📂 Detalles del archivo
+- **Nombre:** `linea_roja_vm.ova`  
+- **Sistema base:** Ubuntu Server 24.04 LTS  
+- **Incluye:**  
+  - Node-RED configurado con los flujos del simulador ferroviario  
+  - Broker Mosquitto MQTT operativo  
+  - Configuración de red y usuarios básica  
+- **Uso:** Importar la OVA en VirtualBox → Iniciar la máquina → Acceder a Node-RED desde el navegador en `http://localhost:1880`
+
+---
+
+### 🔗 Enlace de descarga
+➡️ **[Descargar OVA desde MEGA](https://mega.nz/file/a8BxXazQ#zI--FcDiPpaNM3nZ2yXt_DG76h0bbSZGq_Cx4szNQ-w)**  
+
+---
+
+### 🔐 Integridad del archivo
+Para verificar la integridad del archivo descargado, puedes comprobar su HASH sha256;
+sha256sum linea_roja_vm.ova  36C3AEB47645F693C0AB1E111B78EE650759B5858BB399BC28E9844879261156
+
+---
+⚠️ Nota: Esta máquina virtual está destinada exclusivamente a fines educativos y de demostración dentro del proyecto Línea Roja.
+No debe usarse en entornos productivos o con fines ilícitos.
