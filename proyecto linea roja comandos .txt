@@ -51,8 +51,8 @@ sudo systemctl enable ssh
 ----------------------------------------------------------
 diccionarios 
 rutas 
-usuarios  /root/julio.txt
-contraseñas /root/conts.txt 
+usuarios  julio.txt
+contraseñas conts.txt 
 ----------------------------------
 ----------------------------------
 Escaneo puertos
@@ -69,8 +69,8 @@ search auxiliary ssh scanner
 use 9
 options
 set rhost 10.10.0.10
-set pass_file /root/conts.txt
-set user_file /root/julio.txt
+set pass_file /---/conts.txt
+set user_file /---/julio.txt
 set verbose true
 run 
 
@@ -146,6 +146,7 @@ Manolete
 Kr0ss
 671993
 fabada
+
 
 
 
